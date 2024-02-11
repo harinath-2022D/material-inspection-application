@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Plant</title>
+<style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        table{
+            margin: 50px auto;
+        }
+        td{
+            line-height: 3;
+        }
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 10px;
+        }
+        label {
+            margin-right: 100px;;
+        }
+
+        input {
+            width: 200px;
+        }
+        
+    </style>
+</head>
+<body>
+<header>
+        <div>
+            <h1>Plant form</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            
+            <form th:action="@{/plant/sumbit-plant}" th:object="${plant}" method="post">
+            <table>
+            <tr>
+                <td><label for="plant-id">plant ID :</label></td>
+                <td><input type="text" required name="plant-id" th:field = "*{plantId}"/><span>*</span></td>
+            </tr>
+            
+            <tr>
+                <td><label for="plant-name">Plant Name :</label></td>
+                <td><input type="text" required name="plant-name" th:field = "*{plantName}"/><span>*</span></td>
+            </tr>
+            
+            <tr>
+               <td><label for="plant-loca">Plant Location :</label> </td> 
+               <td> <input type="text" required name="plant-loca" th:field = "*{location}"/><span>*</span> </td> 
+            </tr>
+            </table>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+        </form>
+        </section>
+    </main>
+</body>
+</html>

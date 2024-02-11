@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Inspection Lot</title>
+  </head>
+  <style>
+    p {
+      font-size: 25px;
+      text-align: center;
+    }
+    table {
+      width: 50%;
+      border-collapse: collapse;
+      margin: 5% auto;
+    }
+    .item {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+      width: 50%;
+    }
+    #submit {
+      display: flex;
+      justify-content: center;
+      margin-left: 100%;
+      margin-top: 15%;
+    }
+    div {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #btn {
+      width: 200px;
+      height: 30px;
+    }
+    #end-item {
+      width: 90%;
+    }
+    .res{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width : 94%;
+      border: none;
+    }
+    #res-text{
+        margin-right: 20px;
+    }
+   
+  </style>
+  <body>
+    <header>
+      <p>Inspection Lot Edit Details</p>
+    </header>
+    <main>
+      <section th:if="${lot!=null}">
+      
+        <form th:action="@{/insp/save/edit/lot}" th:object="${editLot}" method="post">
+
+          <table>
+            
+            
+            <tr>
+              <td class="item">Inspection Lot ID</td>
+              <td class="item" th:text="${lot.lotId}" ></td>
+              
+            </tr>
+            
+            <tr>
+            <td class="item" >Confirm Lot ID :</td>
+            <td class="item" ><input type="text" required th:field = "*{id}" /></td>
+            </tr>
+            
+            <tr>
+              <td class="item">Material</td>
+              <td class="item" th:text="${lot.material.materialDesc}"></td>
+            </tr>
+            <tr>
+              <td class="item">Vendor</td>
+              <td class="item" th:text="${lot.vendor.name}"></td>
+            </tr>
+            <tr>
+              <td class="item">Plant</td>
+              <td class="item" th:text="${lot.plant.plantName}"></td>
+            </tr>
+            <tr>
+              <td class="item">Created On</td>
+              <td class="item" th:text="${lot.creationDate}"></td>
+            </tr>
+            <tr>
+              <td class="item">Inspection start date</td>
+              <td class="item" th:text="${lot.inspectionStartDate}"></td>
+            </tr>
+            <tr>
+              <td class="item">Inspection end date</td>
+              <td class="item"><input type="date" id="end-item" required th:field="*{date}" /></td>
+            </tr>
+            <tr>
+              <td class="item">Result</td>
+              <td class="item res">
+              <span id="res-text" th:text="${lot.result}"></span>
+                <select required name="result" id="sel" th:style="${ lot.result == 'APPROVED' ? 'display: none;' : 'display: block' }">
+                  <option value="APPROVED">APPROVE</option>
+                  <option value="FAIL">FAIL</option>
+                  <option value="RE-INSPECT">RE-INSPECT</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="item">Remarks</td>
+              <td class="item" >
+                <textarea
+                  name=""
+                  id="end-item"
+                  cols="30"
+                  rows="1"
+                  required
+                  th:field="*{remarks}"
+                ></textarea>
+              </td>
+            </tr>
+          </table>
+          <div>
+            <input id="btn" type="submit" value="submit" />
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

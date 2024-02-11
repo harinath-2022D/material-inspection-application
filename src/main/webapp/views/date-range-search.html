@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Range Search</title>
+    <style>
+      table {
+        margin: 100px auto;
+      }
+      tr {
+        line-height: 2;
+      }
+
+      input,
+      select {
+        margin-left: 50px;
+        width: 150px;
+      }
+      
+      div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+      
+    </style>
+    
+    
+    <script th:inline="javascript">
+    function handleDateValidation(){
+    	
+  	  const fromDate = document.getElementById("from-dt");
+
+  	  const toDate = document.getElementById("to-dt");
+  	    
+  	  const fromDateValue = new Date(fromDate.value);
+  	  
+  	  const toDateValue = new Date(toDate.value);
+  	  
+  	  console.log((toDateValue - fromDateValue)/(1000 * 3600 * 24));
+  	  if(toDateValue < fromDateValue){
+  		  alert("please select valid dates");
+  		  fromDate.value = "";
+  		  toDate.value = "";
+  	  }
+  	  if (((toDateValue - fromDateValue)/(1000 * 3600 * 24)) > 90) {
+  		  
+  	      alert("select date ranges in 90 days period");
+
+  	      toDate.value = "";
+  	  }
+  }
+    </script>
+  </head>
+  <body>
+  <form th:action="@{/insp/lot/date/seatch}" method="get" th:object="${searchObj}">
+    <table>
+      <tr>
+        <td>Inspection Date *</td>
+        <td><input type="date" id="from-dt" required th:field="*{fromDate}" /></td>
+        <td>
+          <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to &nbsp; &nbsp; &nbsp;</span
+          ><input type="date" required th:field="*{toDate}" id="to-dt" th:onchange="handleDateValidation()"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Material Number</td>
+        <td><input type="text" th:field="*{materialId}" /></td>
+      </tr>
+      <tr>
+        <td>Plant ID</td>
+        <td><input type="text" th:field="*{plantId}" /></td>
+      </tr>
+      <tr>
+        <td>Vendor ID</td>
+        <td><input type="text" th:field="*{vendorId}"/></td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>
+          <select th:name="status">
+            <option value="">select status</option>
+            <option value="APPROVED">APPROVE</option>
+            <option value="FAIL">FAIL</option>
+            <option value="RE-INSPECT">RE-INSPECT</option>
+            <option value="INSP">Under Inspection</option>
+            <option value="MARKED FOR APPROVEL">MARKED FOR APPROVEL</option>
+          </select>
+        </td>
+      </tr>
+      
+     
+    </table>
+     <div>
+                <input type="submit" value="submit" />
+      </div>
+    </form>
+  </body>
+</html>

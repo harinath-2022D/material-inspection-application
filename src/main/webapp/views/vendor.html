@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 10px;
+        }
+        label {
+            margin-right: 50px;;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Vendor form</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            <form th:action="@{/vendor/sumbitVendor}" th:object="${vendor}" method="post">
+                <div>
+                <label for="vendor-id"></label>
+                <input type="hidden" name="vendor-id" required th:field = "*{vendorId}" />
+                </div>
+                <div>
+                <label for="vendor-name">Vendor Name : </label>
+                <input type="text" name="vendor-name" required th:field = "*{name}" /><span>*</span>
+                </div>
+                <div>
+                <label for="vendor-email">Vendor Email : </label>
+                <input type="email" required name="vendor-email" th:field = "*{email}" /><span>*</span>
+                </div>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

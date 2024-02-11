@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material List</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <script th:inline="javascript">
+       function handleEdit( materialId){
+    	  
+    	   window.location.href = "/material/editMaterial?id="+materialId;
+       }
+       function handleDelete(materialId){
+    	   window.location.href = "/material/deleteMaterial?id="+materialId;
+       }
+    </script>
+</head>
+<body>
+<header>
+<h2 class="text-center">ALL Materials</h2>
+</header>
+    <main>
+        <div class="container w-300 mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Material ID</th>
+                    <th class="th-lg">Material Description</th>
+                    <th class="th-lg">Material Type</th>
+                    <th class="th-lg">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="material: ${materialsList}">
+                    <td th:text="${material.materialId}"></td>
+                    <td th:text="${material.materialDesc}"></td>
+                    <td th:text="${material.type}"></td>
+                    <td><a th:href="@{/material/edit(id=${material.materialId})}"><button class="btn btn-primary" >EDIT</button></a>
+             <!--    <a th:href="@{/material/delete(id=${material.materialId})}"><button class="btn btn-danger" >DELETE</button></a> -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </main>
+</body>
+</html>

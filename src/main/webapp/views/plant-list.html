@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor List</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <script th:inline="javascript">
+       function handleEdit(plantId){
+    	   window.location.href = "/plant/edit?id="+plantId;
+       }
+       function handleDelete(vendorId){
+    	   window.location.href = "/vendor/deleteVendor?id="+vendorId;
+       }
+    </script>
+</head>
+<body>
+<header>
+<h2 class="text-center">ALL Plants</h2>
+</header>
+    <main>
+        <div class="container w-300 mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+            <!--         <th>ID</th>  -->
+                    <th class="th-lg">Plant ID</th>
+                    <th class="th-lg">Plant Name</th>
+                    <th class="th-lg">Location</th>
+                    <th class="th-lg">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="plant: ${plantsList}">
+                    <td th:text="${plant.plantId}"></td>
+                    <td th:text="${plant.plantName}"></td>
+                    <td th:text="${plant.location}"></td>
+                    <td><a th:href="@{/plant/edit(id=${plant.plantId})}"><button class="btn btn-primary" >EDIT</button></a></td>
+                   <!--  <button class="btn btn-danger" th:onclick="|handleDelete('${vendor.vendorId}')|">DELETE</button>
+                    --> 
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </main>
+</body>
+</html>

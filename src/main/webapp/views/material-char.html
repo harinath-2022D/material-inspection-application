@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Characteristics</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        table{
+            margin: 50px auto;
+        }
+        td{
+            line-height: 3;
+        }
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 10px;
+        }
+        label {
+            margin-right: 100px;;
+        }
+
+        input ,select{
+            width: 200px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Material Characteristics form</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            
+            <form th:action="@{/material/sumbit/mat/char}" th:object="${materialChar}" method="post">
+            <table>
+            <tr>
+                <td><label for="char-desc">Characteristic Description :</label></td>
+                <td><input type="text" required name="char-desc" th:field = "*{characteristicDescription}"/><span>*</span></td>
+            </tr>
+            <tr>
+                <td><label for="material">Material ID :</label></td>
+                <td><select name="material" required>
+                    <option value="">select option</option>
+                    <option th:each="mat : ${materials}" th:value="${mat.materialId}" th:text="${mat.materialId}"></option>
+                </select><span>*</span>
+            </td>
+            </tr>
+            <tr>
+               <td><label for="up-tol">Upper Tolerance Limit :</label> </td> 
+               <td> <input type="text" required name="up-tol" th:field = "*{upperToleranceLimit}"/><span>*</span> </td> 
+            </tr>
+            <tr>
+                <td><label for="lw-tol">Lower Tolerance Limit :</label> </td> 
+                <td> <input type="text" required name="lw-tol" th:field = "*{lowerToleranceLimit}"/><span>*</span> </td> 
+             </tr>
+             <tr>
+                <td><label for="uom">Unit Of Measurement :</label> </td> 
+                <td> <input type="text" required name="uom" th:field = "*{unitOfMeasure}"/><span>*</span> </td> 
+             </tr>
+            </table>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+        </form>
+        </section>
+    </main>
+</body>
+</html>

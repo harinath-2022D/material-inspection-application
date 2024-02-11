@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Lots</title>
+ <style>
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 5% auto;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      p {
+        font-size: 25px;
+        text-align: center;
+      }
+    </style>
+    
+    <script th:inline="javascript">
+    
+         function handleViewActualsAndChare(lotId){
+    	        window.location.href = "/insp/lot/search/info?id="+lotId;
+         }
+    
+         function handleEdit(lotId){
+    	        window.location.href = "/insp/lot/edit/info?id="+lotId;
+        }
+    </script>
+</head>
+<body>
+<header>
+<p>Inspection Lot Details</p>
+</header>
+<main>
+      <section>
+        <div>
+          <table th:id="lots">
+            <tr>
+
+              <td>Lot ID</td>
+              <td>Created On</td>
+              <td>Inspection Start On</td>
+              <td>Inspection End On</td>
+              <td>Status</td>
+              <td>Inspected By</td>
+              <td>Actions</td>
+             
+            </tr>
+            <tr th:each="obj : ${list}" >
+              
+              <td th:text="${obj.lotId}"></td>
+              <td th:text="${obj.createdOn}" ></td>
+              <td th:text="${obj.startOn}"></td>
+              <td th:text="${obj.endOn != null ? obj.endOn : 'PENDING'}"></td>
+              <td th:text="${obj.result}"></td>
+              <td th:text="${obj.inspectedBy != null ? obj.inspectedBy : '-'}"></td>
+              <td><button th:onclick="|handleViewActualsAndChare('${obj.lotId}')|">View Actuals</button> 
+              <button th:style="${obj.result == 'INSP' && obj.actualsStatus == false ? 'display:none' : 'color:red'}" th:onclick="|handleEdit('${obj.lotId}')|">Edit</button></td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </main>
+</body>
+</html>

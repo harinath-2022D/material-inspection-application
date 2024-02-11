@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+ 
+form *{
+    font-family: 'Poppins',sans-serif;
+}
+form h3{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: center;
+}
+form{
+    height: 400px;
+    width: 300px;
+    margin: auto;
+    margin-top: 3%;
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 35px;
+}
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+input{
+    height: 50px;
+    width: 100%;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    border: 1px solid black;
+}
+button{
+    margin-top: 30px;
+    width: 100%;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer; 
+}
+
+p {
+text-align: center;
+margin-top: 20px;
+}
+    </style>
+</head>
+<body>
+    <p th:text="${error}" th:style="'color:red;'"></p>
+    <form th:action="@{/login}" th:object="${user}" method="post" >
+    
+        <h3>Login Here</h3>
+       
+        <label for="username">Username</label>
+        <input type="text" placeholder="User ID" id="username" th:field = "*{username}">
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" id="password" th:field ="*{password}">
+
+        <button type="submit">Log In</button>
+        
+    </form>
+</body>
+</html>

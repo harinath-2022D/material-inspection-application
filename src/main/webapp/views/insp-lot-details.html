@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>inspection-lots</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 5% auto ;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        #insp, #insp-actu, #insp-edit {
+            text-align: center;
+        }
+        .insp-td{
+            width: 50%;
+        }
+        .search{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2%;
+        }
+        #box{
+            margin-left: 10%;
+        }
+        
+    </style>
+    <script th:inline="javascript">
+    function handleViewActualsAndChare(lotId){
+    	window.location.href = "/insp/lot/search/info?id="+lotId;
+    }
+    function handleEdit(lotId){
+    	window.location.href = "/insp/lot/edit/info?id="+lotId;
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div>
+          <form th:action="@{/insp/lot/search}" th:object="${search}" method="post" >
+            <div class="search">
+                <label for="lotId">Inspection Lot ID :</label>
+                <input id="box" type="text" name="lotId" required th:field = "*{lot}"/>
+            </div>
+            <div class="search">
+                <input  type="submit" value="submit" />
+            </div>
+          </form>
+        </div>
+    </header>
+    <main>
+        <section th:if="${lot!=null} " class="details">
+            <table>
+                <tr>
+                    <th colspan="2" id="insp">Lot Details</th>
+                    
+                </tr>
+                <tr>
+                    <td>Lot ID</td>
+                    <td th:text="${lot.lotId}"></td>
+                </tr>
+                <tr>
+                    <td>Material</td>
+                    <td th:text="${lot.material.materialDesc}"></td>
+                </tr>
+                <tr>
+                    <td>Vendor</td>
+                    <td th:text="${lot.vendor.name}"></td>
+                </tr>
+                <tr>
+                    <td>Plant</td>
+                    <td th:text="${lot.plant.plantName}"></td>
+                </tr>
+                <tr>
+                    <td>Created On</td>
+                    <td th:text="${lot.creationDate}"></td>
+                </tr>
+                <tr>
+                    <td>Inspection start date</td>
+                    <td th:text="${lot.inspectionStartDate}"></td>
+                </tr>
+                <tr>
+                    <td>Inspection end date</td> 
+                    <td th:text="${lot.inspectionEndDate}"></td>
+                </tr>
+                <tr>
+                    <td>Result</td>
+                    <td th:text="${lot.result}" th:style="${lot.result == 'APPROVED' ? 'color: green;' : 'color: red;'}"></td>
+                </tr>
+                <tr>
+                    <td>Remarks</td>
+                    <td th:text="${lot.remarks}"></td>
+                </tr>
+                <tr>
+                    <td>User ID</td>
+                    <td th:if="${lot.user != null}" th:text="${lot.user.getUserId}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="insp-actu"><button type="button" th:onclick="|handleViewActualsAndChare('${lot.lotId}')|">View Actuals and Characteristics</button></td>
+                </tr>
+                
+                <tr th:if="${lot.getInspectionActuals().size() ==  lot.getMaterial().getMaterialChar().size()}">
+                    <td colspan="2" id="insp-edit"><button type="button" th:onclick="|handleEdit('${lot.lotId}')|">EDIT</button></td>
+                </tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

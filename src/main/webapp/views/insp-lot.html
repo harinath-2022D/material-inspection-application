@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Lot</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        table{
+            margin: 50px auto;
+        }
+        td{
+            line-height: 3;
+        }
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 10px;
+        }
+        label {
+            margin-right: 100px;;
+        }
+
+        input ,select{
+            width: 200px;
+        }
+        
+    </style>
+    
+    <script th:inline="javascript">
+    
+    function handelDateValidation(){
+    	  const startDate = document.getElementById("st-dt");
+
+    	  const createDate = document.getElementById("cr-dt");
+    	    
+    	  const createDateValue = new Date(createDate.value);
+    	  
+    	  const startDateValue = new Date(startDate.value);
+    	      
+    	      console.log(createDateValue);
+    	      console.log(startDateValue);
+    	      
+    	      
+    	  if (startDateValue < createDateValue) {
+    		  
+    	      alert("change start date");
+
+    	      startDate.value = "";
+    	  }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Material Inspection Lot Creation form</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            
+            <form th:action="@{/material/create/insp/lot}" th:object="${inspectionLot}" method="post">
+            <table>
+           
+            <tr>
+                <td><label for="material">Material ID :</label></td>
+                <td><select name="material" required>
+                    <option value="">select material</option>
+                    <option th:each="mat : ${materials}" th:value="${mat.materialId}" th:text="${mat.materialId}"></option>
+                </select>
+            </td>
+            </tr>
+
+            <tr>
+                <td><label for="plant">Plant ID :</label></td>
+                <td><select name="plant" required>
+                    <option value="">select plant</option>
+                    <option th:each="pla : ${plants}" th:value="${pla.plantId}" th:text="${pla.plantId}"></option>
+                </select>
+            </td>
+            </tr>
+
+            <tr>
+                <td><label for="vendor">Vendor ID :</label></td>
+                <td><select name="vendor" required>
+                    <option value="">select vendor</option>
+                    <option th:each="vend : ${vendors}" th:value="${vend.vendorId}" th:text="${vend.name}"></option>
+                </select>
+            </td>
+            </tr>
+            <tr>
+               <td><label for="cr-dt">Create Date :</label> </td> 
+               <td> <input type="date" required name="cr-dt" th:id="cr-dt" th:field = "*{creationDate}"/> </td> 
+            </tr>
+            <tr>
+               <td><label for="st-dt">Start Date :</label> </td> 
+               <td> <input type="date" required name="st-dt" th:id="st-dt" th:field = "*{inspectionStartDate}" th:onchange="handelDateValidation()"/> </td> 
+            </tr>    
+            </table>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+        </form>
+        </section>
+    </main>
+</body>
+</html>

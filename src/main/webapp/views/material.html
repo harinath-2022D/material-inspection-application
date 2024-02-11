@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material ADD</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+        table{
+            margin: 50px auto;
+        }
+        td{
+            line-height: 3;
+        }
+        div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 10px;
+        }
+        label {
+            margin-right: 100px;;
+        }
+
+        input {
+            width: 200px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Material form</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            
+            <form th:action="@{/material/save}" th:object="${material}" method="post">
+            <table>
+            <tr>
+                <td><label for="material-id">Material ID :</label></td>
+                <td><input type="text" required name="material-id" th:field = "*{materialId}"/><span>*</span></td>
+            </tr>
+            <tr>
+                <td><label for="material-desc">Material Description :</label></td>
+                <td><input type="text" required name="material-desc" th:field = "*{materialDesc}"/><span>*</span></td>
+            </tr>
+            <tr>
+               <td><label for="material-type">Material Type :</label> </td> 
+               <td> <input type="text" required name="material-type" th:field = "*{type}"/><span>*</span> </td> 
+            </tr>
+            </table>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+        </form>
+        </section>
+    </main>
+</body>
+</html>
