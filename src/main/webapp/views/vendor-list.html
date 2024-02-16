@@ -12,10 +12,14 @@
        function handleDelete(vendorId){
     	   window.location.href = "/vendor/deleteVendor?id="+vendorId;
        }
+       function handleBack(){
+       	window.location.href = "/home";
+       }
     </script>
 </head>
 <body>
 <header>
+<button th:onclick="handleBack()" class="btn btn-primary m-3">BACK</button>
 <h2 class="text-center">ALL Vendors</h2>
 </header>
     <main>

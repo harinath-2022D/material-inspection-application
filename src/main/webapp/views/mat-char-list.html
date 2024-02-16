@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Material Char</title>
+
+<style>
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+table {
+	width: 80%;
+	border-collapse: collapse;
+	margin: 5% auto;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 8px;
+	text-align: left;
+}
+
+#search-btn {
+	margin-left: 100px;
+	width: 80px;
+	height: 30px;
+}
+
+.nav {
+	padding: 15px;
+	background-color: #0d6efd;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#back-btn {
+	margin: 20px;
+	width: 80px;
+	height: 30px;
+}
+
+#btn-mat {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+p {
+	padding-left: 50px;
+}
+</style>
+
+<script th:inline="javascript">
+function handleSearchLot() {
+	window.location.href = "/insp/lot";
+}
+function goToHome() {
+	window.location.href = "/home";
+}
+</script>
+</head>
+<body>
+	<header th:include="home :: header"> </header>
+	<main>
+		<div id="btn-mat">
+			<button th:onclick="history.back()" th:id="back-btn">Back</button>
+
+			<div id="btn-mat">
+				<p>Material :</p>
+				<p th:text="${mat}"></p>
+			</div>
+		</div>
+		<section>
+			<div>
+				<table th:id="result">
+					<tr>
+
+						<td>Characteristic ID</td>
+						<td>Characteristic Desc</td>
+						<td>Maximum UTL</td>
+						<td>Minimum LTL</td>
+						<td>Unit Of Measure</td>
+
+					</tr>
+					<tr th:each="obj : ${list}">
+
+						<td th:text="${obj.characteristicId}"></td>
+						<td th:text="${obj.characteristicDescription}"></td>
+						<td th:text="${obj.upperToleranceLimit}"></td>
+						<td th:text="${obj.lowerToleranceLimit}"></td>
+						<td th:text="${obj.unitOfMeasure}"></td>
+
+					</tr>
+				</table>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

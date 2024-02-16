@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class LotActualsAndCharacteristics {
-	
+	private int lotId;
 	private int sNo;
 	private int characteristicId;
 	private String characteristicDesc;

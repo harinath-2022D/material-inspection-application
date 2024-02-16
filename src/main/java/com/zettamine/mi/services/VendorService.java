@@ -12,4 +12,6 @@ public interface VendorService {
 	Vendor getVendor(Integer id);
 
 	boolean deleteVendor(Integer id);
+	
+	List<Vendor> getAllActiveVendor();
 }

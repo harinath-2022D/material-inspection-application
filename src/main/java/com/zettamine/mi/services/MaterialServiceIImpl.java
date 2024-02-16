@@ -5,20 +5,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.zettamine.mi.entities.InspectionActuals;
 import com.zettamine.mi.entities.InspectionLot;
 import com.zettamine.mi.entities.Material;
 import com.zettamine.mi.entities.MaterialInspectionCharacteristics;
-import com.zettamine.mi.entities.Plant;
-import com.zettamine.mi.entities.Vendor;
-import com.zettamine.mi.repositories.InspectionActualsRepository;
 import com.zettamine.mi.repositories.InspectionLotRepository;
 import com.zettamine.mi.repositories.MaterialCharRepository;
 import com.zettamine.mi.repositories.MaterialRepository;
-import com.zettamine.mi.repositories.PlantRepository;
-import com.zettamine.mi.repositories.VendorRepository;
+import com.zettamine.mi.responsedto.LotActualsAndCharacteristics;
+import com.zettamine.mi.utils.StringUtil;
 
 @Service
 public class MaterialServiceIImpl implements MaterialService {
@@ -29,15 +27,10 @@ public class MaterialServiceIImpl implements MaterialService {
 
 	private InspectionLotRepository inspectionLotRepo;
 
-	private VendorRepository vendorRepository;
-
-	private PlantRepository plantRepository;
-
-	private InspectionActualsRepository inspActRepo;
+	private Logger LOG = LoggerFactory.getLogger(MaterialServiceIImpl.class);
 
 	public MaterialServiceIImpl(MaterialRepository materialRepository, MaterialCharRepository materialCharReposotory,
-			InspectionLotRepository inspectionLotRepo, VendorRepository vendorRepository,
-			PlantRepository plantRepository, InspectionActualsRepository inspActRepo) {
+			InspectionLotRepository inspectionLotRepo) {
 		super();
 		this.materialRepository = materialRepository;
 
@@ -45,17 +38,16 @@ public class MaterialServiceIImpl implements MaterialService {
 
 		this.inspectionLotRepo = inspectionLotRepo;
 
-		this.vendorRepository = vendorRepository;
-
-		this.plantRepository = plantRepository;
-
-		this.inspActRepo = inspActRepo;
 	}
 
 	@Override
 	public List<Material> getAllMaterials() {
 
+		LOG.info("finding all materials");
+
 		List<Material> materialList = materialRepository.findAll();
+
+		LOG.info("returing all materials list");
 
 		return materialList;
 	}
@@ -63,11 +55,18 @@ public class MaterialServiceIImpl implements MaterialService {
 	@Override
 	public Material getMaterial(String id) {
 
+		LOG.info("finding material with id : {}", id);
+
 		Optional<Material> optMaterial = materialRepository.findById(id);
 
 		if (optMaterial.isEmpty()) {
+
+			LOG.info("no material associated with id : {}", id);
+
 			return null;
 		}
+
+		LOG.info("returing material with id : {}", id);
 
 		return optMaterial.get();
 	}
@@ -75,17 +74,28 @@ public class MaterialServiceIImpl implements MaterialService {
 	@Override
 	public boolean deleteMaterial(String id) {
 
+		LOG.info("finding material with id : {}", id);
+
 		Optional<Material> optMaterial = materialRepository.findById(id);
 
 		if (optMaterial.isEmpty()) {
+
+			LOG.info("no material associated with id : {}", id);
+
 			return false;
 		}
 
 		Material material = optMaterial.get();
 
+		LOG.info("setting material status to INACTIVE");
+
 		material.setStatus("N");
 
+		LOG.info("saving material of id : {}", id);
+
 		materialRepository.save(material);
+
+		LOG.info("returning true");
 
 		return true;
 	}
@@ -93,38 +103,59 @@ public class MaterialServiceIImpl implements MaterialService {
 	@Override
 	public boolean addNewMaterial(Material material) {
 
-		material.setStatus("Y");
+		Optional<Material> optMaterial = materialRepository.findById(material.getMaterialId());
+		Optional<Material> optMaterialDesc = materialRepository.findByMaterialDesc(material.getMaterialDesc());
 
-		Material savedMaterial = materialRepository.save(material);
-
-		if (savedMaterial.getMaterialId() == null) {
+		if (optMaterial.isPresent() || optMaterialDesc.isPresent()) {
 			return false;
-		}
+		} else {
 
-		return true;
+			material.setStatus("Y");
+
+			material.setMaterialId(StringUtil.removeAllSpaces(material.getMaterialId()));
+
+			material.setMaterialDesc(StringUtil.removeExtraSpaces(material.getMaterialDesc()).toUpperCase());
+
+			material.setType(StringUtil.removeExtraSpaces(material.getType().toUpperCase()));
+
+			Material savedMaterial = materialRepository.save(material);
+
+			if (savedMaterial.getMaterialId() == null) {
+				return false;
+			}
+
+			LOG.info("new material saved with id : {}", savedMaterial.getMaterialId());
+
+			return true;
+		}
 	}
 
 	@Override
 	public boolean addNewMaterialCharacteristic(MaterialInspectionCharacteristics matChar) {
-		System.out.println(matChar);
+
+		if (Double.valueOf(matChar.getLowerToleranceLimit()) > Double.valueOf(matChar.getUpperToleranceLimit())) {
+			return false;
+		}
+
+		matChar.setCharacteristicDescription(
+				StringUtil.removeExtraSpaces(matChar.getCharacteristicDescription()).toUpperCase());
+
+		Material material = matChar.getMaterial();
+
+		for (MaterialInspectionCharacteristics matCharItem : material.getMaterialChar()) {
+
+			if (matCharItem.getCharacteristicDescription().equals(matChar.getCharacteristicDescription())) {
+				return false;
+			}
+
+		}
+
+		LOG.info("new Material characteristic adding {}", matChar);
 
 		MaterialInspectionCharacteristics savedCharacteristic = materialCharReposotory.save(matChar);
 
-		Optional<Material> material = materialRepository.findById(matChar.getMaterial());
-
-		if (material.isPresent()) {
-
-			Material mat = material.get();
-
-			for (int i = 0; i < mat.getMaterialChar().size(); i++) {
-				System.out.println(mat.getMaterialChar().get(i));
-			}
-
-		} else {
-			System.out.println("material is null ------------------------->");
-		}
-
 		if (savedCharacteristic.getCharacteristicId() > 0) {
+
 			return true;
 		}
 
@@ -134,6 +165,8 @@ public class MaterialServiceIImpl implements MaterialService {
 	@Override
 	public List<InspectionLot> getAllInspectionLots() {
 
+		LOG.info("getting all lots");
+
 		List<InspectionLot> lots = inspectionLotRepo.findAll();
 
 		List<InspectionLot> responseList = new LinkedList<>();
@@ -141,40 +174,17 @@ public class MaterialServiceIImpl implements MaterialService {
 		for (InspectionLot lot : lots) {
 
 			if (lot.getMaterial().getMaterialChar().size() != lot.getInspectionActuals().size()) {
+
+				LOG.info("adding lots those have not done all inspection actuals");
+
 				responseList.add(lot);
 			}
 		}
+
+		LOG.info("returing response list");
+
 		return responseList;
 //		return lots;
-	}
-
-	@Override
-	public boolean createInspectionLot(InspectionLot lot) {
-		
-		lot.setResult("INSP");
-		InspectionLot savedLot = inspectionLotRepo.save(lot);
-
-		if (savedLot.getLotId() > 0) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public List<Vendor> getAllVendors() {
-
-		List<Vendor> vendorList = vendorRepository.findAll();
-
-		return vendorList;
-	}
-
-	@Override
-	public List<Plant> getAllPlants() {
-
-		List<Plant> plantList = plantRepository.findAll();
-
-		return plantList;
 	}
 
 	@Override
@@ -201,6 +211,9 @@ public class MaterialServiceIImpl implements MaterialService {
 				if (inspActualsList.contains(item.getCharacteristicId())) {
 
 				} else {
+
+					LOG.info("getting all material characteristics of lot {}", id);
+
 					repsonseList.add(item);
 				}
 			}
@@ -217,29 +230,106 @@ public class MaterialServiceIImpl implements MaterialService {
 	}
 
 	@Override
-	public InspectionLot getInspectionLot(Integer id) {
+	public List<MaterialInspectionCharacteristics> getAllCharacteristicsOfMaterial(String id) {
+		Material material = getMaterial(id);
 
-		Optional<InspectionLot> optInspectionLot = inspectionLotRepo.findById(id);
+		List<MaterialInspectionCharacteristics> list = new LinkedList<>();
 
-		if (optInspectionLot.isPresent()) {
-			InspectionLot insp = optInspectionLot.get();
-//			System.out.println(insp.getLotId());
-			return insp;
+		if (material != null) {
+
+			list = material.getMaterialChar();
 		}
-
-		return null;
+		return list;
 	}
 
 	@Override
-	public boolean saveInspActuals(InspectionActuals actuals) {
+	public boolean saveEditMaterial(Material material) {
+		material.setStatus("Y");
 
-		InspectionLot lot = getInspectionLot(Integer.valueOf(actuals.getRequiredLot()));
+		material.setMaterialId(StringUtil.removeAllSpaces(material.getMaterialId()));
 
-		actuals.setInspectionLot(lot);
+		material.setMaterialDesc(StringUtil.removeExtraSpaces(material.getMaterialDesc()).toUpperCase());
 
-		inspActRepo.save(actuals);
+		material.setType(StringUtil.removeExtraSpaces(material.getType().toUpperCase()));
+
+		Material savedMaterial = materialRepository.save(material);
+
+		if (savedMaterial.getMaterialId() == null) {
+			return false;
+		}
+
+		LOG.info("material updation saved with id : {}", savedMaterial.getMaterialId());
 
 		return true;
 	}
+
+//	@Override
+//	public InspectionLot getInspectionLot(Integer id) {
+//
+//		Optional<InspectionLot> optInspectionLot = inspectionLotRepo.findById(id);
+//
+//		if (optInspectionLot.isPresent()) {
+//			InspectionLot insp = optInspectionLot.get();
+////			System.out.println(insp.getLotId());
+//			
+//			LOG.info("finding inspection lot with id {}", id);
+//			
+//			return insp;
+//		}
+//		
+//		LOG.info("no lot associated with id {}", id);
+//		
+//		return null;
+//	}
+
+//	@Override
+//	public boolean saveInspActuals(InspectionActuals actuals) {
+//
+//		InspectionLot lot = getInspectionLot(Integer.valueOf(actuals.getRequiredLot()));
+//
+//		actuals.setInspectionLot(lot);
+//
+//		inspActRepo.save(actuals);
+//
+//		return true;
+//	}
+
+//	@Override
+//	public boolean createInspectionLot(InspectionLot lot) {
+//		
+//		lot.setResult("INSP");
+//		InspectionLot savedLot = inspectionLotRepo.save(lot);
+//
+//		if (savedLot.getLotId() > 0) {
+//			
+//			LOG.info("new lot Created with id : {}" , savedLot.getLotId());
+//			
+//			return true;
+//		}
+//		
+//		LOG.info("lot creation failed");
+//		
+//		return false;
+//	}
+
+//	@Override
+//	public List<Vendor> getAllVendors() {
+//		
+//		LOG.info("getting all vendors");
+//		
+//		List<Vendor> vendorList = vendorRepository.findAll();
+//
+//		return vendorList;
+//	}
+
+//	@Override
+//	public List<Plant> getAllPlants() {
+//		
+//		LOG.info("getting all plants");
+//		
+//		List<Plant> plantList = plantRepository.findAll();
+//
+//		return plantList;
+//	}
 
 }

@@ -1,100 +1,135 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Date Range Search</title>
-    <style>
-      table {
-        margin: 100px auto;
-      }
-      tr {
-        line-height: 2;
-      }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Date Range Search</title>
+<style>
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+table {
+	margin: 100px auto;
+}
 
-      input,
-      select {
-        margin-left: 50px;
-        width: 150px;
-      }
-      
-      div{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-      
-    </style>
-    
-    
-    <script th:inline="javascript">
-    function handleDateValidation(){
-    	
-  	  const fromDate = document.getElementById("from-dt");
+tr {
+	line-height: 2;
+}
 
-  	  const toDate = document.getElementById("to-dt");
-  	    
-  	  const fromDateValue = new Date(fromDate.value);
-  	  
-  	  const toDateValue = new Date(toDate.value);
-  	  
-  	  console.log((toDateValue - fromDateValue)/(1000 * 3600 * 24));
-  	  if(toDateValue < fromDateValue){
-  		  alert("please select valid dates");
-  		  fromDate.value = "";
-  		  toDate.value = "";
-  	  }
-  	  if (((toDateValue - fromDateValue)/(1000 * 3600 * 24)) > 90) {
-  		  
-  	      alert("select date ranges in 90 days period");
+input, select {
+	margin-left: 50px;
+	width: 150px;
+}
 
-  	      toDate.value = "";
-  	  }
-  }
-    </script>
-  </head>
-  <body>
-  <form th:action="@{/insp/lot/date/seatch}" method="get" th:object="${searchObj}">
-    <table>
-      <tr>
-        <td>Inspection Date *</td>
-        <td><input type="date" id="from-dt" required th:field="*{fromDate}" /></td>
-        <td>
-          <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to &nbsp; &nbsp; &nbsp;</span
-          ><input type="date" required th:field="*{toDate}" id="to-dt" th:onchange="handleDateValidation()"/>
-        </td>
-      </tr>
-      <tr>
-        <td>Material Number</td>
-        <td><input type="text" th:field="*{materialId}" /></td>
-      </tr>
-      <tr>
-        <td>Plant ID</td>
-        <td><input type="text" th:field="*{plantId}" /></td>
-      </tr>
-      <tr>
-        <td>Vendor ID</td>
-        <td><input type="text" th:field="*{vendorId}"/></td>
-      </tr>
-      <tr>
-        <td>Status</td>
-        <td>
-          <select th:name="status">
-            <option value="">select status</option>
-            <option value="APPROVED">APPROVE</option>
-            <option value="FAIL">FAIL</option>
-            <option value="RE-INSPECT">RE-INSPECT</option>
-            <option value="INSP">Under Inspection</option>
-            <option value="MARKED FOR APPROVEL">MARKED FOR APPROVEL</option>
-          </select>
-        </td>
-      </tr>
-      
-     
-    </table>
-     <div>
-                <input type="submit" value="submit" />
-      </div>
-    </form>
-  </body>
+div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+h2{
+  display : inline-block;
+  color : #0d6efd;
+  background-color: white;
+  border-radius: 10px;
+  padding-left : 10px;
+  padding-right : 10px;
+}
+
+#search-btn {
+	margin-left: 100px;
+	width: 80px;
+	height: 30px;
+}
+.nav {
+	padding: 15px;
+	background-color: #0d6efd;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+</style>
+
+
+<script th:inline="javascript">
+	function handleDateValidation() {
+
+		const fromDate = document.getElementById("from-dt");
+
+		const toDate = document.getElementById("to-dt");
+
+		const fromDateValue = new Date(fromDate.value);
+
+		const toDateValue = new Date(toDate.value);
+
+		console.log((toDateValue - fromDateValue) / (1000 * 3600 * 24));
+		if (toDateValue < fromDateValue) {
+			alert("please select valid dates");
+			fromDate.value = "";
+			toDate.value = "";
+		}
+		if (((toDateValue - fromDateValue) / (1000 * 3600 * 24)) > 90) {
+
+			alert("select date ranges in 90 days period");
+
+			toDate.value = "";
+		}
+	}
+	function handleCancel() {
+		window.location.href = "/home";
+	}
+	function goToHome() {
+		window.location.href = "/home";
+	}
+</script>
+</head>
+<body>
+<header th:include="home :: header"></header>
+	<form th:action="@{/insp/lot/date/search}" method="get"
+		th:object="${searchObj}">
+		<table>
+			<tr>
+				<td>Inspection Date *</td>
+				<td><input type="date" id="from-dt" required
+					th:field="*{fromDate}" /></td>
+				<td><span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to &nbsp;
+						&nbsp; &nbsp;</span><input type="date" required th:field="*{toDate}"
+					id="to-dt" th:onchange="handleDateValidation()" /></td>
+			</tr>
+			<tr>
+				<td>Material Number</td>
+				<td><input type="text" th:field="*{materialId}" /></td>
+			</tr>
+			<tr>
+				<td>Plant ID</td>
+				<td><input type="text" th:field="*{plantId}" /></td>
+			</tr>
+			<tr>
+				<td>Vendor ID</td>
+				<td><input type="text" th:field="*{vendorId}" /></td>
+			</tr>
+			<tr>
+				<td>Status</td>
+				<td><select th:name="status">
+						<option value="">SELECT STATUS</option>
+						<option value="APPROVED">APPROVE</option>
+						<option value="FAIL">FAIL</option>
+						<option value="RE-INSPECT">RE-INSPECT</option>
+						<option value="INSP">UNDER INSPECTION</option>
+						<option value="MARKED FOR APPROVEL">MARKED FOR APPROVAL</option>
+				</select></td>
+			</tr>
+
+
+		</table>
+		<div>
+			<button type="button" th:onclick="handleCancel()">CANCEL</button>
+			<input type="submit" value="submit" />
+
+		</div>
+	</form>
+</body>
 </html>

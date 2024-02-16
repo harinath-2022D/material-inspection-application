@@ -9,10 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity
 @Data
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Vendor {
 	
 	@Id
@@ -20,6 +23,7 @@ public class Vendor {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ven_seq")
 	@SequenceGenerator(name = "ven_seq", sequenceName = "ven_sequence", initialValue = 5001, allocationSize = 1)
 	private int vendorId;
+	
 	
 	private String name;
 	

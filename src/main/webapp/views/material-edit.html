@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Material ADD</title>
+<title>Edit Material</title>
 <style>
 * {
 	padding: 0px;
@@ -57,13 +57,8 @@ button {
 	height: 30px;
 }
 
-#msg1 {
+p {
 	color: green;
-	text-align: center;
-	margin-top: 10px;
-}
-#msg2 {
-	color: red;
 	text-align: center;
 	margin-top: 10px;
 }
@@ -81,15 +76,11 @@ button {
 	}
 	document.addEventListener("DOMContentLoaded", function() {
 		setTimeout(function() {
-			const msg1 = document.getElementById("msg1");
-			const msg2 = document.getElementById("msg2");
-			if (msg1) {
-				msg1.innerText = "";
+			const msg = document.getElementById("msg");
+			if (msg) {
+				msg.innerText = "";
 			}
-			if (msg2) {
-				msg2.innerText = "";
-			}
-		}, 2000);
+		}, 1000);
 	});
 </script>
 </head>
@@ -97,13 +88,12 @@ button {
 	<header th:include="home :: header"> </header>
 	<main>
 		<div>
-			<h1>New Material Adding Form</h1>
+			<h1>Material Updation Form</h1>
 		</div>
-		<p th:text="${message}" id="msg1">message</p>
-		<p th:text="${error}" id="msg2">message</p>
+		<p th:text="${message}" id="msg">message</p>
 		<section>
 
-			<form th:action="@{/material/save}" th:object="${material}"
+			<form th:action="@{/material/edit/save}" th:object="${material}"
 				method="post">
 				<table>
 					<tr>
@@ -123,7 +113,7 @@ button {
 					</tr>
 				</table>
 				<div>
-					<button type="button" th:onclick="handleCancel()">CANCEL</button>
+					<button type="button" th:onclick="history.back()">CANCEL</button>
 					<button type="submit" value="submit">SUBMIT</button>
 				</div>
 			</form>

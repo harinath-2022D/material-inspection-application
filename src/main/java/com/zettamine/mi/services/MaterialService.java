@@ -8,6 +8,7 @@ import com.zettamine.mi.entities.Material;
 import com.zettamine.mi.entities.MaterialInspectionCharacteristics;
 import com.zettamine.mi.entities.Plant;
 import com.zettamine.mi.entities.Vendor;
+import com.zettamine.mi.responsedto.LotActualsAndCharacteristics;
 
 public interface MaterialService {
 
@@ -22,17 +23,21 @@ public interface MaterialService {
 	boolean addNewMaterialCharacteristic(MaterialInspectionCharacteristics matChar);
 
 	List<InspectionLot> getAllInspectionLots();
-
-	boolean createInspectionLot(InspectionLot lot);
-
-	List<Vendor> getAllVendors();
-
-	List<Plant> getAllPlants();
-
+	
 	List<MaterialInspectionCharacteristics> getMaterialCharByLotId(String id);
+//
+//	boolean createInspectionLot(InspectionLot lot);
+//
+//	List<Vendor> getAllVendors();
+//
+//	List<Plant> getAllPlants();
+//
+//	InspectionLot getInspectionLot(Integer id);
+//
+//	boolean saveInspActuals(InspectionActuals actuals);
 
-	InspectionLot getInspectionLot(Integer id);
+	List<MaterialInspectionCharacteristics> getAllCharacteristicsOfMaterial(String id);
 
-	boolean saveInspActuals(InspectionActuals actuals);
+	boolean saveEditMaterial(Material material);
 
 }

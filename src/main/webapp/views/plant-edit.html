@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Plant</title>
+<title>Plant Edit</title>
 <style>
 * {
 	padding: 0px;
@@ -37,8 +37,7 @@ td {
 }
 
 div {
-	display: flex;
-	justify-content: center;
+	display: flex; justify-content : center;
 	align-items: center;
 	justify-content: center;
 }
@@ -57,14 +56,8 @@ button {
 	height: 30px;
 }
 
-#msg1 {
+p {
 	color: green;
-	text-align: center;
-	margin-top: 10px;
-}
-
-#msg2 {
-	color: red;
 	text-align: center;
 	margin-top: 10px;
 }
@@ -77,17 +70,13 @@ button {
 
 	document.addEventListener("DOMContentLoaded", function() {
 		setTimeout(function() {
-			const msg1 = document.getElementById("msg1");
-			const msg2 = document.getElementById("msg2");
-			if (msg1) {
-				msg1.innerText = "";
+			const msg = document.getElementById("msg");
+			if (msg) {
+				msg.innerText = "";
 			}
-			if (msg2) {
-				msg2.innerText = "";
-			}
-		}, 2000);
+		}, 1000);
 	});
-
+	
 	function goToHome() {
 		window.location.href = "/home";
 	}
@@ -101,16 +90,16 @@ button {
 	</div>
 	<main>
 		<section>
-			<p th:text="${message}" id="msg1">message</p>
-			<p th:text="${error}" id="msg2">message</p>
-			<form th:action="@{/plant/sumbit-plant}" th:object="${plant}"
+			<p th:text="${message}" id="msg">message</p>
+
+			<form th:action="@{/plant/edit/save}" th:object="${plant}"
 				method="post">
 
 				<table>
 					<tr>
 						<td><label for="plant-id">plant ID :</label></td>
 						<td><input type="text" required name="plant-id"
-							th:field="*{plantId}" th:readonly="${plant.plantId != null}" /><span>*</span></td>
+							th:field="*{plantId}" th:readonly="${plant.plantId != null}"/><span>*</span></td>
 					</tr>
 
 					<tr>

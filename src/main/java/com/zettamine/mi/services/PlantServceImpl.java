@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.zettamine.mi.entities.Plant;
 import com.zettamine.mi.entities.Vendor;
 import com.zettamine.mi.repositories.PlantRepository;
+import com.zettamine.mi.utils.StringUtil;
 
 @Service
 public class PlantServceImpl implements PlantService {
@@ -20,28 +21,21 @@ public class PlantServceImpl implements PlantService {
 
 	@Override
 	public boolean addNewPlant(Plant plant) {
-//		plant.setStatus("Y");
-//		Plant savedPlant = plantReposotory.save(plant);
-//		if(savedPlant.getVendorId() > 0) {
-//			return true;
-//		}
-//		return true;
-		
-		if(plant.getPlantId() != "") {
-//			plant.setStatus("Y");
-			Plant savedPlant = plantReposotory.save(plant);
-			if(savedPlant.getPlantId() != "") {
-				return true;
-			}
+		Optional<Plant> optPlantId = plantReposotory.findById(plant.getPlantId());
+		Optional<Plant> optPlantName = plantReposotory.findByPlantName(plant.getPlantName());
+
+		if (optPlantId.isPresent() || optPlantName.isPresent()) {
 			return false;
-			}else {
-				Optional<Plant> optVendor = plantReposotory.findById(plant.getPlantId());
-				Plant prevPlant = optVendor.get();
-				prevPlant.setLocation(plant.getLocation());
-				prevPlant.setPlantName(plant.getPlantName());
-				plantReposotory.save(prevPlant);
-				return true;
-			}
+		}
+		
+		plant.setPlantId(StringUtil.removeAllSpaces(plant.getPlantId()));
+		
+		plant.setLocation(StringUtil.removeExtraSpaces(plant.getLocation()));
+
+		plant.setPlantName(StringUtil.removeExtraSpaces(plant.getPlantName()));
+
+		plantReposotory.save(plant);
+		return true;
 	}
 
 	@Override
@@ -53,11 +47,26 @@ public class PlantServceImpl implements PlantService {
 	@Override
 	public Plant getPlant(String id) {
 		Optional<Plant> plant = plantReposotory.findById(id);
-		if(plant.isEmpty()) {
+		if (plant.isEmpty()) {
 			return null;
 		}
 		return plant.get();
 	}
-	
-	
+
+	@Override
+	public boolean saveEditedPlant(Plant plant) {
+
+		plant.setPlantId(StringUtil.removeExtraSpaces(plant.getPlantId()));
+
+		plant.setLocation(StringUtil.removeExtraSpaces(plant.getLocation()));
+
+		plant.setPlantName(StringUtil.removeExtraSpaces(plant.getPlantName()));
+
+		Plant savedPlant = plantReposotory.save(plant);
+		if (savedPlant.getPlantId() != "") {
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -22,4 +22,6 @@ public class DateRangeLotResponse {
 	private Integer inspectedBy;
 	
 	private Boolean actualsStatus;
+	
+	private String material;
 }

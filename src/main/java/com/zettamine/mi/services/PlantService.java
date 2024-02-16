@@ -12,4 +12,6 @@ public interface PlantService {
 
 	Plant getPlant(String id);
 
+	boolean saveEditedPlant(Plant plant);
+
 }

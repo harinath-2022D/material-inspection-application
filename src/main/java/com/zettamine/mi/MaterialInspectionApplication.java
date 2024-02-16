@@ -1,20 +1,21 @@
 package com.zettamine.mi;
 
-import java.io.IOException;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class MaterialInspectionApplication {
+	
+	private static Logger LOG = LoggerFactory.getLogger(MaterialInspectionApplication.class);
 
 	public static void main(String[] args) {
+		
+		LOG.info("Loading main class");
+		
 		SpringApplication.run(MaterialInspectionApplication.class, args);
-//		try {
-//			Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler http://localhost:8080/index.html");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+
 	}
 
 }

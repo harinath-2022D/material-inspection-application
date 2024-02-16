@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lot Actuals And Required Characteristics</title>
-    <style>
-      table {
-        width: 80%;
-        border-collapse: collapse;
-        margin: 5% auto;
-      }
-      th,
-      td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-      }
-      p {
-        font-size: 25px;
-        text-align: center;
-      }
-    </style>
-    <script th:inline="javascript">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lot Actuals And Required Characteristics</title>
+<style>
+table {
+	width: 80%;
+	border-collapse: collapse;
+	margin: 5% auto;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 8px;
+	text-align: left;
+}
+
+p {
+	font-size: 25px;
+	text-align: center;
+}
+
+button {
+	width: 50px;
+	height: 30px;
+}
+</style>
+<script th:inline="javascript">
     function myFunction(){
     	
     	const table = document.getElementById("result");
@@ -57,48 +63,57 @@
     	}
     }
     /* setTimeout(myFunction, 1000); */
+    
+    function handleBack(lotId){
+    	window.location.href = "/insp/lot/data?id="+lotId ;
+    }
     </script>
-  </head>
-  <body>
-  <header>
-  <div>
-  <p>Inspection Lot Actuals and Required parameters<p>
-  </div>
-  </header>
-    <main>
-      <section>
-        <div>
-          <table th:id="result">
-            <tr>
-              <td>S.NO</td>
-              <td>Characteristic ID</td>
-              <td>Characteristic Desc</td>
-              <td>Maximum UTL</td>
-              <td>Minimum LTL</td>
-              <td>Unit Of Measure</td>
-              <td>Actual UTL</td>
-              <td>Actual LTL</td>
-            </tr>
-            <tr th:each="obj : ${list}" th:id="${obj.sNo}">
-              <td th:text="${obj.sNo}"></td>
-              <td th:text="${obj.characteristicId}"></td>
-              <td th:text="${obj.characteristicDesc}"></td>
-              <td th:text="${obj.upperToleranceLimit}" th:id="${obj.sNo+ 'RU'}" ></td>
-              <td th:text="${obj.lowerToleranceLimit}" th:id="${obj.sNo+ 'RL'}"></td>
-              <td th:text="${obj.unitOfMeasure}"></td>
-         <!--     <td th:text="${obj.actualUtl}" th:id="${obj.sNo+ 'AU'}"></td>
-              <td th:text="${obj.actualLtl}" th:id="${obj.sNo+ 'AL'}"></td>    --> 
-               <td th:id="${obj.sNo + 'AU'}" th:style="${obj.actualUtl > obj.upperToleranceLimit || obj.actualUtl < obj.lowerToleranceLimit} ? 'color: red;' : 'color: black;'">
-              <span th:text="${obj.actualUtl}"></span>
-              </td>
-              <td th:id="${obj.sNo + 'AL'}" th:style="${obj.actualLtl < obj.lowerToleranceLimit || obj.actualLtl > obj.upperToleranceLimit} ? 'color: red;' : 'color: black;'">
-              <span th:text="${obj.actualLtl}"></span>
-              </td>
-              
-            </tr>
-          </table>
-        </div>
-      </section>
-    </main>
-  </body>
+</head>
+<body>
+	<header>
+		<!--   <button type="button" th:onclick="|handleBack('${obj} != null ? ${obj.lotId} : 0')|" >Back></button>   -->
+		<button type="button" th:onclick="history.back()">BACK</button>
+		<div>
+			<p>Inspection Lot Actuals and Required parameters
+			<p>
+		</div>
+	</header>
+	<main>
+		<section>
+			<div>
+				<table th:id="result">
+					<tr>
+						<td>S.NO</td>
+						<td>Characteristic ID</td>
+						<td>Characteristic Desc</td>
+						<td>Maximum UTL</td>
+						<td>Minimum LTL</td>
+						<td>Unit Of Measure</td>
+						<td>Actual UTL</td>
+						<td>Actual LTL</td>
+					</tr>
+					<tr th:each="obj : ${list}" th:id="${obj.sNo}">
+						<td th:text="${obj.sNo}"></td>
+						<td th:text="${obj.characteristicId}"></td>
+						<td th:text="${obj.characteristicDesc}"></td>
+						<td th:text="${obj.upperToleranceLimit}" th:id="${obj.sNo+ 'RU'}"></td>
+						<td th:text="${obj.lowerToleranceLimit}" th:id="${obj.sNo+ 'RL'}"></td>
+						<td th:text="${obj.unitOfMeasure}"></td>
+						<!--     <td th:text="${obj.actualUtl}" th:id="${obj.sNo+ 'AU'}"></td>
+              <td th:text="${obj.actualLtl}" th:id="${obj.sNo+ 'AL'}"></td>    -->
+						<td th:id="${obj.sNo + 'AU'}"
+							th:style="${obj.actualUtl > obj.upperToleranceLimit || obj.actualUtl < obj.lowerToleranceLimit} ? 'color: red;' : 'color: black;'">
+							<span th:text="${obj.actualUtl != null ? obj.actualUtl : '-'}"></span>
+						</td>
+						<td th:id="${obj.sNo + 'AL'}"
+							th:style="${obj.actualLtl < obj.lowerToleranceLimit || obj.actualLtl > obj.upperToleranceLimit} ? 'color: red;' : 'color: black;'">
+							<span th:text="${obj.actualLtl != null ? obj.actualLtl : '-'}"></span>
+						</td>
+
+					</tr>
+				</table>
+			</div>
+		</section>
+	</main>
+</body>
 </html>

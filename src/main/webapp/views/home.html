@@ -1,179 +1,215 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        *{
-            padding: 0px;
-            margin: 0px;
-            box-sizing: border-box;
-            font-family: 'Poppins',sans-serif;
-        }
-        header{
-            height: 20vh;
-        }
-        h2{
-            margin-top: 30px;
-            text-align: center;
-        }
-        main {
-            height: 70vh;
-        }
-        .container {
-            width: 515px;
-            height: 146px;
-            margin: 0 auto;
-        }
-        .material-opt{
-            width: 514px;
-            height: 80px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin: 0 auto;
-        }
-        .items {
-            width: auto;
-            height: 50px;
-            border: 1px solid black;
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-            position: relative;
-        }
-        .material-insp{
-            width: 514px;
-            height: 80px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-        }
-        .insp {
-            width: 200px;
-            height: 50px;
-            border: 1px solid black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .sub-items {
-            display: none;
-            position: absolute;
-        }
-        ul{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            list-style-type: none;
-            line-height: 1.5;
-        }
-        li:hover {
-            background-color: aqua;
-            cursor: pointer;
-        }
-        .items:hover .sub-items{
-            display: block;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            bottom: 100%;
-            width: auto;
-            height: auto;
-        }
-        .insp:hover .sub-items {
-            display: block;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 100%;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<style>
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
 
-    <script th:inline="javascript">
-        function handleAddVendor(){
-        	window.location.href="/vendor/addvendor";
-        }
-        
-        function handleGetVendors(){
-        	window.location.href="/vendor/viewVendors";
-        }
-        
-        function handleGetPlants(){
-        	window.location.href="/plant/view/plants";
-        }
-        function handleAddMaterial(){
-        	window.location.href="/material/addMaterial";
-        }
-        
-        function handleGetMaterial(){
-        	window.location.href="/material/viewMaterials";
-        }
-        function handleAddPlant(){
-        	window.location.href="/plant/add-plant";
-        }
-        function handleAddMaterialChar(){
-        	window.location.href="/material/add/char";
-        }
-        function handleAddMaterialActu(){
-        	window.location.href="/material/add/actu";
-        }
-        
-        function handleCreateLot(){
-        	window.location.href = "/material/create/lot";
-        }
-        
-        function handleSearchLot(){
-        	window.location.href = "/insp/lot";
-        }
-        
-        function handleDateSearchLot(){
-        	window.location.href = "/insp/lot/date";
-        }
-    </script>
+header {
+	height: 20vh;
+}
+
+h2 {
+	display: inline-block;
+	color: #0d6efd;
+	background-color: white;
+	border-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#search-btn {
+	margin-left: 100px;
+	width: 90px;
+	height: 30px;
+}
+
+.nav {
+	padding: 15px;
+	background-color: #0d6efd;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+main {
+	height: 70vh;
+}
+
+.container {
+	width: 515px;
+	height: 146px;
+	margin: 0 auto;
+}
+
+.material-opt {
+	width: 514px;
+	height: 80px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 120px;
+	margin: 0 auto;
+}
+
+.items {
+	width: auto;
+	height: 50px;
+	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.material-insp {
+	width: 514px;
+	height: 80px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+}
+
+.sub-items {
+	display: none;
+	position: absolute;
+}
+
+ul {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	list-style-type: none;
+	line-height: 1.5;
+}
+
+li:hover {
+	background-color: #0d6efd;
+	cursor: pointer;
+	color: white;
+}
+
+.items:hover .sub-items {
+	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	bottom: 100%;
+	width: auto;
+	height: auto;
+}
+
+.insp:hover .sub-items {
+	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 100%;
+}
+</style>
+
+<script th:inline="javascript">
+	function handleAddVendor() {
+		window.location.href = "/vendor/addvendor";
+	}
+
+	function handleGetVendors() {
+		window.location.href = "/vendor/viewVendors";
+	}
+
+	function handleGetPlants() {
+		window.location.href = "/plant/view/plants";
+	}
+	function handleAddMaterial() {
+		window.location.href = "/material/add";
+	}
+
+	function handleGetMaterial() {
+		window.location.href = "/material/view/all";
+	}
+	function handleAddPlant() {
+		window.location.href = "/plant/add-plant";
+	}
+	function handleAddMaterialChar() {
+		window.location.href = "/material/add/char";
+	}
+	function handleAddMaterialActu() {
+		window.location.href = "/insp/add/actu";
+	}
+
+	function handleCreateLot() {
+		window.location.href = "/insp/create/lot";
+	}
+
+	function handleSearchLot() {
+		window.location.href = "/insp/lot";
+	}
+
+	function handleDateSearchLot() {
+		window.location.href = "/insp/lot/date";
+	}
+	function goToHome() {
+		window.location.href = "/home";
+	}
+</script>
 </head>
 <body>
-    <header>
-       <h2>Materials Inspection in MEDCHAL Warehouse</h2>
-    </header>
-    <main>
-        <div class="container">
-            <div class="material-opt">
-                    <div id="vendor" class="items">Vendor
-                        <ul class="sub-items">
-                            <li id="add-vendor" th:onclick="handleAddVendor()">add vendor</li>
-                            <li th:onclick="handleGetVendors()">view vendors</li>
-                        </ul>
-                    </div>
-                    <div id="plant" class="items">Plant
-                        <ul class="sub-items">
-                            <li th:onclick="handleAddPlant()">add plant</li>
-                            <li th:onclick="handleGetPlants()">view plants</li>
-                        </ul>
-                    </div>
-                    <div class="items">Material
-                        <ul class="sub-items">
-                            <li th:onclick="handleAddMaterial()">add material</li>
-                            <li th:onclick="handleGetMaterial()">view materials</li>
-                            <li th:onclick="handleAddMaterialChar()">add characteristics</li>
-                            <li th:onclick="handleAddMaterialActu()">add inspection actuals</li>
-                        </ul>
-                    </div>
-            </div>
-            <div class="material-insp">
-                <div class="insp">Inspection Lot
-                    <ul class="sub-items">
-                        <li th:onclick="handleCreateLot()">create lot</li>
-                        <li th:onclick="handleSearchLot()">search lot</li>
-                        <li th:onclick="handleDateSearchLot()">date range search</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </main>
+	<header>
+		<div class="nav">
+			<h2>Materials Inspection Application</h2>
+			<button id="search-btn" th:onclick="goToHome()">HOME</button>
+			<button id="search-btn" th:onclick="handleSearchLot()">SEARCH LOT</button>
+
+		</div>
+
+	</header>
+	<main>
+		<div class="container">
+			<div class="material-opt">
+				<div id="vendor" class="items">
+					Vendor
+					<ul class="sub-items">
+						<li id="add-vendor" th:onclick="handleAddVendor()">Add Vendor</li>
+						<li th:onclick="handleGetVendors()">View Vendors</li>
+					</ul>
+				</div>
+				<div id="plant" class="items">
+					Plant
+					<ul class="sub-items">
+						<li th:onclick="handleAddPlant()">Add Plant</li>
+						<li th:onclick="handleGetPlants()">View Plants</li>
+					</ul>
+				</div>
+				<div class="items">
+					Material
+					<ul class="sub-items">
+						<li th:onclick="handleAddMaterial()">Add Material</li>
+						<li th:onclick="handleGetMaterial()">View Materials</li>
+						<li th:onclick="handleAddMaterialChar()">Add Characteristics</li>
+
+					</ul>
+				</div>
+
+				<div class="items">
+					Inspection Lot
+					<ul class="sub-items">
+						<li th:onclick="handleCreateLot()">Create Lot</li>
+						<li th:onclick="handleAddMaterialActu()">Add Inspection
+							Actuals</li>
+						<li th:onclick="handleSearchLot()">Search Lot</li>
+						<li th:onclick="handleDateSearchLot()">Date Range Search</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
 </body>
 </html>

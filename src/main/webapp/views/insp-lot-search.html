@@ -5,7 +5,7 @@
 <title>Lots</title>
  <style>
       table {
-        width: 80%;
+        width: 98%;
         border-collapse: collapse;
         margin: 5% auto;
       }
@@ -19,6 +19,8 @@
         font-size: 25px;
         text-align: center;
       }
+      
+      
     </style>
     
     <script th:inline="javascript">
@@ -30,10 +32,18 @@
          function handleEdit(lotId){
     	        window.location.href = "/insp/lot/edit/info?id="+lotId;
         }
+         
+         function handleCharacteristics(lotId) {
+     		
+
+     		window.location.href = "/material/lot/char?id=" + lotId;
+     	}
     </script>
 </head>
 <body>
 <header>
+
+<button type="button" th:onclick="history.back()">BACK</button>
 <p>Inspection Lot Details</p>
 </header>
 <main>
@@ -46,6 +56,7 @@
               <td>Created On</td>
               <td>Inspection Start On</td>
               <td>Inspection End On</td>
+              <td>Material</td>
               <td>Status</td>
               <td>Inspected By</td>
               <td>Actions</td>
@@ -53,14 +64,16 @@
             </tr>
             <tr th:each="obj : ${list}" >
               
-              <td th:text="${obj.lotId}"></td>
+              <td th:text="${obj.lotId}" id="inspection-lot"></td>
               <td th:text="${obj.createdOn}" ></td>
               <td th:text="${obj.startOn}"></td>
               <td th:text="${obj.endOn != null ? obj.endOn : 'PENDING'}"></td>
-              <td th:text="${obj.result}"></td>
-              <td th:text="${obj.inspectedBy != null ? obj.inspectedBy : '-'}"></td>
+              <td th:text="${obj.material}"></td>
+              <td th:text="${obj.result}" th:style="${obj.result == 'INSP' ? 'color: blue;' : obj.result == 'FAIL' || obj.result == 'RE-INSPECT' ? 'color:red;' :'color:green;'}"></td>
+              <td th:text="${obj.inspectedBy != 0 ? obj.inspectedBy : '-'}"></td>
               <td><button th:onclick="|handleViewActualsAndChare('${obj.lotId}')|">View Actuals</button> 
-              <button th:style="${obj.result == 'INSP' && obj.actualsStatus == false ? 'display:none' : 'color:red'}" th:onclick="|handleEdit('${obj.lotId}')|">Edit</button></td>
+              <button th:style="${obj.result == 'INSP' && obj.actualsStatus == false ? 'display:none' : 'color:red'}" th:onclick="|handleEdit('${obj.lotId}')|">Edit</button>
+              <button th:style="${obj.endOn == null && obj.result == 'INSP' && obj.actualsStatus == false ? 'color:green': 'display:none' }" th:onclick="|handleCharacteristics('${obj.lotId}')|">Add Actuals</button></td>
             </tr>
           </table>
         </div>

@@ -13,10 +13,14 @@
        function handleDelete(materialId){
     	   window.location.href = "/material/deleteMaterial?id="+materialId;
        }
+       function handleBack(){
+       	window.location.href = "/home";
+       }
     </script>
 </head>
 <body>
 <header>
+<button th:onclick="handleBack()" class="btn btn-primary m-3">BACK</button>
 <h2 class="text-center">ALL Materials</h2>
 </header>
     <main>
@@ -36,6 +40,7 @@
                     <td th:text="${material.materialDesc}"></td>
                     <td th:text="${material.type}"></td>
                     <td><a th:href="@{/material/edit(id=${material.materialId})}"><button class="btn btn-primary" >EDIT</button></a>
+                    <td><a th:href="@{/material/view/char(id=${material.materialId})}"><button class="btn btn-primary" >View Characteristics</button></a>
              <!--    <a th:href="@{/material/delete(id=${material.materialId})}"><button class="btn btn-danger" >DELETE</button></a> -->
                     </td>
                 </tr>

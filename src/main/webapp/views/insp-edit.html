@@ -13,7 +13,7 @@
     table {
       width: 50%;
       border-collapse: collapse;
-      margin: 5% auto;
+      margin: 2% auto;
     }
     .item {
       border: 1px solid black;
@@ -54,6 +54,7 @@
   </style>
   <body>
     <header>
+     <button type = "button" th:onclick="history.back()" >BACK</button>
       <p>Inspection Lot Edit Details</p>
     </header>
     <main>
@@ -92,17 +93,17 @@
               <td class="item" th:text="${lot.creationDate}"></td>
             </tr>
             <tr>
-              <td class="item">Inspection start date</td>
+              <td class="item">Inspection Start Date</td>
               <td class="item" th:text="${lot.inspectionStartDate}"></td>
             </tr>
             <tr>
-              <td class="item">Inspection end date</td>
+              <td class="item">Inspection End Date</td>
               <td class="item"><input type="date" id="end-item" required th:field="*{date}" /></td>
             </tr>
             <tr>
               <td class="item">Result</td>
               <td class="item res">
-              <span id="res-text" th:text="${lot.result}"></span>
+              <span id="res-text" th:text="${lot.result} " th:style="${lot.result == 'APPROVED' ? 'color: green' : 'color: red'}"></span>
                 <select required name="result" id="sel" th:style="${ lot.result == 'APPROVED' ? 'display: none;' : 'display: block' }">
                   <option value="APPROVED">APPROVE</option>
                   <option value="FAIL">FAIL</option>

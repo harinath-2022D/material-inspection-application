@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.zettamine.mi.entities.Vendor;
 import com.zettamine.mi.repositories.VendorRepository;
+import com.zettamine.mi.utils.StringUtil;
 
 @Service
 public class VendorServiceImpl implements VendorService {
@@ -21,8 +22,11 @@ public class VendorServiceImpl implements VendorService {
 	
 	@Override
 	public boolean addNewVendor(Vendor vendor) {
+		try {
 		if(vendor.getVendorId() == 0) {
 		vendor.setStatus("Y");
+		vendor.setName(StringUtil.removeExtraSpaces(vendor.getName()));
+		vendor.setEmail(StringUtil.removeExtraSpaces(vendor.getEmail()));
 		Vendor savedVendor = vendorRepository.save(vendor);
 		if(savedVendor.getVendorId() > 0) {
 			return true;
@@ -31,10 +35,13 @@ public class VendorServiceImpl implements VendorService {
 		}else {
 			Optional<Vendor> optVendor = vendorRepository.findById(vendor.getVendorId());
 			Vendor prevVendor = optVendor.get();
-			prevVendor.setEmail(vendor.getEmail());
-			prevVendor.setName(vendor.getName());
+			prevVendor.setEmail(StringUtil.removeExtraSpaces(vendor.getEmail()));
+			prevVendor.setName(StringUtil.removeExtraSpaces(vendor.getName()));
 			vendorRepository.save(prevVendor);
 			return true;
+		}
+		}catch(Exception ex) {
+			return false;
 		}
 		
 	}
@@ -42,11 +49,16 @@ public class VendorServiceImpl implements VendorService {
 
 	@Override
 	public List<Vendor> getAllVendor() {
-		List<Vendor> vendorsList = vendorRepository.findAllActiveVendors("Y");
+		List<Vendor> vendorsList = vendorRepository.findAll();
 		return vendorsList;
 	}
 
-
+	
+	@Override
+	public List<Vendor> getAllActiveVendor() {
+		List<Vendor> vendorsList = vendorRepository.findAllActiveVendors("Y");
+		return vendorsList;
+	}
 	@Override
 	public Vendor getVendor(Integer id) {
 		Optional<Vendor> vendor = vendorRepository.findById(id);
@@ -69,5 +81,8 @@ public class VendorServiceImpl implements VendorService {
 		vendorRepository.save(vendor);
 		return true;
 	}
+
+
+	
 
 }
